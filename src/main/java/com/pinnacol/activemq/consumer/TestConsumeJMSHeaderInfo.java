@@ -41,7 +41,7 @@ public class TestConsumeJMSHeaderInfo {
 	
 	public static void main(String[] args) throws JMSException {
 		
-		System.out.println("Calling TestConsumeJMSHeaderInfo application");
+		System.out.println("Started TestConsumeJMSHeaderInfo application ...");
 		
 		TestConsumeJMSHeaderInfo consumerApp = new TestConsumeJMSHeaderInfo();
 		
@@ -73,16 +73,19 @@ public class TestConsumeJMSHeaderInfo {
 	
 	protected void consumeAndDisplayMessages() throws JMSException {
 		
+		System.out.println("Listening for messages on " + this.queueHeader + " ...");
+		
 		StopWatch sw = new StopWatch();
 		int count = 0;
+		String svalue = null;
 		
-		sw.start();
+//		sw.start();
 		
 		while(this.listening) {
 			
 			count++;
 			
-			System.out.println("count = " + count);
+//			System.out.println("count = " + count);
 
 			Message message = this.consumer.receive();
 
@@ -97,18 +100,24 @@ public class TestConsumeJMSHeaderInfo {
 				Object value = message.getObjectProperty(name);
 
 				System.out.println("value = " + value);
+				svalue = value.toString();
 
 			}
 			
-			if(count == this.messageCount) {
+			if(svalue.equals("quit")) {
 				this.listening = false;
 			}
 			
+//			if(count == this.messageCount) {
+//				this.listening = false;
+//			}
+			
 		}
 		
-		sw.stop();
+//		sw.stop();
 		
-		System.out.println("Time to consume " + count + " messages is " + sw.getElapsedTime() + " ms");
+//		System.out.println("Time to consume " + count + " messages is " + sw.getElapsedTime() + " ms");
+		System.out.println("Quit sent - stop listening to queue");
 		
 	}
 	
